@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import CoreData
 
+let kUSDAItemCompleted = "USDAItemInstanceComplete"
+
 class DataController{
     
     class func jsonAsUSDAIDAndNameSearchResults (json: NSDictionary) -> [(name:String , idValue:String)] {
@@ -50,7 +52,7 @@ class DataController{
                     var requestForUSDAItem = NSFetchRequest(entityName: "USDAItem")
                     let itemDictionaryId: String = itemDictionary["_id"]! as String
                     
-                    let predicate = NSPredicate(format: "idValu == %@", itemDictionaryId)
+                    let predicate = NSPredicate(format: "idValue == %@", itemDictionaryId)
                     requestForUSDAItem.predicate = predicate
                     
                     var error: NSError?
@@ -163,7 +165,7 @@ class DataController{
                             }
                                 
                             (UIApplication.sharedApplication().delegate as AppDelegate).saveContext()
-                                
+                            NSNotificationCenter.defaultCenter().postNotificationName(kUSDAItemCompleted, object: usdaItem)
                         }
                     }
                 }
